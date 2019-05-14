@@ -16,7 +16,7 @@
   height: 50px;
 }
 
-.counter {
+#counter {
   position: absolute;
   left: 350px;
   color: black;
