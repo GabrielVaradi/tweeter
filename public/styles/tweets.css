@@ -1,0 +1,78 @@
+.tweet-container {
+  position: relative;
+  top: 100px;
+  height: 200px;
+  background-color: #eee;
+  border-style: groove;
+  border-radius: 6px;
+  border-color: grey;
+  width: 85%;
+  margin: auto;
+}
+
+.tweet-container header {
+  position: relative;
+  height: 70px;
+  background-color: #eee;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.tweet-container header .avatar {
+  color: green;
+  float: left;
+  height: 70px;
+  width: 20%;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+
+.tweet-container header .username {
+  text-align: center;
+  color: red;
+  font-size: 20px;
+  float: left;
+  width: 150px;
+  padding-top: 5px;
+   
+}
+
+.tweet-container header .email {
+  float: right;
+  color: magenta;
+  font-size: 15px;
+  vertical-align: text-top;
+  padding-top: 15px;
+  padding-right: 10px;
+}
+
+.tweet-container .box {
+  background-color: white;
+  height: 90px;
+  font-size: 25px;
+}
+
+.tweet-container .tweetText {
+  color: blue;
+  height: 90px;
+  font-size: 20px;
+  padding-top: 30px;
+  padding-left: 10px;
+}
+
+.tweet-container footer {
+    position: relative;
+  border-top-style: groove;
+  border-top-color: #eee;
+  bottom: 10px;
+  background-color: white;
+  height: 43px;
+}
+
+.tweet-container footer .time {
+  color: orange;
+}
