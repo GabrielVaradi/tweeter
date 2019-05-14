@@ -1,0 +1,38 @@
+.new-tweet {
+  position: relative;
+  top: 75px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #eee;
+  border-style: groove;
+  border-radius: 6px;
+  border-color: grey;
+  width: 85%;
+  margin: auto;
+}
+
+.text-area {
+  width: 100%;
+  height: 50px;
+}
+
+.counter {
+  position: absolute;
+  left: 350px;
+  color: black;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.tweet-button {
+  color: magenta;
+  padding-top: 3px;
+  margin-bottom: 6px;
+}
+
+.new-tweet h2 {
+color: rgb(31, 204, 195);
+border-bottom: 3px;
+border-bottom-style: double;
+border-bottom-color: black;
+}
