@@ -9,11 +9,22 @@
   border-color: grey;
   width: 85%;
   margin: auto;
+  height: 170px;
+}
+
+.box-area {
+position: relative;
 }
 
 .text-area {
   width: 100%;
   height: 50px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 #counter {
@@ -24,7 +35,15 @@
   font-style: italic;
 }
 
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
 .tweet-button {
+  position: relative;
+  float: left;
   color: magenta;
   padding-top: 3px;
   margin-bottom: 6px;
@@ -35,4 +54,11 @@ color: rgb(31, 204, 195);
 border-bottom: 3px;
 border-bottom-style: double;
 border-bottom-color: black;
+}
+
+.error {
+  float: left;
+  color: red;
+  margin-top: 6px;
+  padding-left: 8px;
 }

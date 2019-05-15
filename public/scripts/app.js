@@ -58,32 +58,43 @@ const loadTweets = url => {
 };
 
 $(function() {
+  $(".error").hide()
   $(".compose").click(function() {
-    $(".new-tweet").slideToggle('fast')
-    $(".text-area").focus()
+    $(".new-tweet").slideToggle("fast");
+    $(".text-area").focus();
   });
   const $form = $("form");
   $form.on("submit", function(event) {
     event.preventDefault();
     if ($(this).serialize().length > 145) {
-      alert("too long");
+      $('.error').slideUp('fast')
+      $('.error').html('Please type less than 140 characters').slideDown('fast');
       return;
     }
     if ($(this).serialize().length - 5 === 0) {
-      alert("enter text pl0x");
+      $('.error').slideUp('fast')
+      $('.error').html('Please type in a tweet').slideDown('fast');
       return;
     } else {
+      $('.error').slideUp('fast')
       console.log("Button clicked, performing ajax call...");
       $.ajax({
         data: $(this).serialize(),
         method: "POST",
         url: "/tweets"
-      }).done(function(reponse) {
-        console.log("Success: ", reponse);
-        $("form")[0].reset();
-        loadTweets(url);
-        url.empty();
-      });
+      })
+        .done(function(reponse) {
+          console.log("Success: ", reponse);
+          $("form")[0].reset();
+          loadTweets(url);
+          url.empty();
+        })
+        .fail(error => {
+          console.log(`Error: ${error}`);
+        })
+        .always(() => {
+          console.log("Request completed");
+        });
     }
   });
 

@@ -38,7 +38,7 @@ nav {
   border-radius: 8px;
   border-color: black;
   border-width: thin;
-  background-color: azure
+  background-color: azure;
   color: #00a087;
   width: 11%;
 }
@@ -47,3 +47,5 @@ nav {
   color: black;
   background-color: white
 }
+
+
