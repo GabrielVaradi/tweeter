@@ -5,9 +5,13 @@
   background-color: #eee;
   border-style: groove;
   border-radius: 6px;
-  border-color: grey;
+  border-color: #eee;
   width: 85%;
   margin: auto;
+}
+
+.tweet-container:hover {
+  border-color: rgb(104, 100, 100);
 }
 
 .tweet-container header {
@@ -38,7 +42,6 @@
   float: left;
   width: 150px;
   padding-top: 5px;
-   
 }
 
 .tweet-container header .email {
@@ -65,7 +68,7 @@
 }
 
 .tweet-container footer {
-    position: relative;
+  position: relative;
   border-top-style: groove;
   border-top-color: #eee;
   bottom: 10px;
