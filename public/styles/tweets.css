@@ -1,13 +1,18 @@
 .tweet-container article {
-  top: 150px;
   position: relative;
-  margin: auto;
+  margin: 40px auto;
   border-style: groove;
   border-radius: 6px;
   border-color: #eee;
   margin-top: 25px;
   background-color: #eee;
   width: 85%;
+}
+
+ article:first-of-type{
+
+  margin-top: 120px;
+    
 }
 
 .tweet-container article:hover {
@@ -79,6 +84,7 @@
   font-size: 20px;
   padding-top: 30px;
   padding-left: 10px;
+  word-break: break-all;
 }
 
 .tweet-container footer {
