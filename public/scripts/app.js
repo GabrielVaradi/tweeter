@@ -47,7 +47,14 @@ const loadTweets = url => {
     url: url
   })
     .done(function(response) {
+      //createtweet(url.pop())
       renderTweets(response);
+    })
+    .fail(error => {
+      console.log(`Error: ${error}`);
+    })
+    .always(() => {
+      console.log("Request completed");
     })
     .fail(error => {
       console.log(`Error: ${error}`);
@@ -58,7 +65,7 @@ const loadTweets = url => {
 };
 
 $(function() {
-  $(".error").hide()
+  $(".error").hide();
   $(".compose").click(function() {
     $(".new-tweet").slideToggle("fast");
     $(".text-area").focus();
@@ -67,16 +74,21 @@ $(function() {
   $form.on("submit", function(event) {
     event.preventDefault();
     if ($(this).serialize().length > 145) {
-      $('.error').slideUp('fast')
-      $('.error').html('Please type less than 140 characters').slideDown('fast');
+      $(".error").slideUp("fast");
+      $(".error")
+        .html("Please type less than 140 characters")
+        .slideDown("fast");
       return;
     }
     if ($(this).serialize().length - 5 === 0) {
-      $('.error').slideUp('fast')
-      $('.error').html('Please type in a tweet').slideDown('fast');
+      //better way?
+      $(".error").slideUp("fast");
+      $(".error")
+        .html("Please type in a tweet")
+        .slideDown("fast");
       return;
     } else {
-      $('.error').slideUp('fast')
+      $(".error").slideUp("fast");
       console.log("Button clicked, performing ajax call...");
       $.ajax({
         data: $(this).serialize(),
