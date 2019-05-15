@@ -35,6 +35,8 @@ const createTweetElement = function(tweetData) {
   return $article;
 };
 
+
+
 function renderTweets(tweets) {
   for (const users of tweets) {
     $(".tweet-container").append(createTweetElement(users));
@@ -61,12 +63,11 @@ $(function() {
   const $form = $("form");
   $form.on("submit", function(event) {
     event.preventDefault();
-    console.log($(this).serialize())
-    if($(this).serialize().length > 140){
+    if($(this).serialize().length > 145){
       alert("too long")
       return
     }
-    if($(this).serialize() === false){
+    if($(this).serialize().length  - 5 === 0){
       alert("enter text pl0x")
       return
     }
@@ -74,16 +75,14 @@ $(function() {
     console.log("Button clicked, performing ajax call...");
     $.ajax({ data: $(this).serialize(), method: "POST", url: "/tweets" }).done(
       function(reponse) {
-        
         console.log("Success: ", reponse);
-        $form.reset();
+        $("form")[0].reset()
+        
       }
     )};
   });
+
   loadTweets(url);
   
-  // $('.tweet-button').on('click', function(event){
-  //   event.preventDefault();
-  //   loadTweets(url)
-  // })
+
 });
