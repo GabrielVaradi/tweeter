@@ -20,7 +20,7 @@ const createTweetElement = function(tweetData) {
   const $footerIcons = $("<div>").addClass("icons");
   const $footerTime = $("<div>")
     .addClass("time")
-    .text(tweetData.created_at);
+    .text(new Date(tweetData.created_at));
 
   $article.append($header);
   $article.append($divTextBox);
