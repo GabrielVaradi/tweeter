@@ -4,8 +4,8 @@ Tweeter is a single-page AJAX-based Twitter clone that uses jQuery, HTML5 and CS
 
 ## Final Product
 
-!["Compose a tweet"](https://github.com/GabrielVaradi/TinyApp-Project/blob/master/docs/Login-page.png?raw=true)
-!["Read a tweet"](https://github.com/GabrielVaradi/TinyApp-Project/blob/master/docs/urls-page.png?raw=true)
+!["Compose a tweet"](https://github.com/GabrielVaradi/tweeter/blob/master/docs/compose-tweet.png?raw=true)
+!["Read a tweet"](https://github.com/GabrielVaradi/tweeter/blob/master/docs/read-tweet.png?raw=true)
 
 
 ### Getting Started
