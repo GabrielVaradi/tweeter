@@ -1,5 +1,58 @@
 const url = "/tweets";
 
+function timeSince(date) {
+  var seconds = Math.floor((new Date() - date) / 1000);
+
+  var interval = Math.floor(seconds / 31536000);
+
+  if (interval >= 1) {
+    if (interval === 1) {
+      return "Created " + interval + " year ago";
+    } else {
+      return "Created " + interval + " years ago";
+    }
+  }
+  interval = Math.floor(seconds / 2592000);
+  if (interval >= 1) {
+    if (interval === 1) {
+      return "Created " + interval + " months ago";
+    } else {
+      return "Created " + interval + " months ago";
+    }
+  }
+  interval = Math.floor(seconds / 86400);
+  if (interval >= 1) {
+    if (interval === 1) {
+      return "Created " + interval + " day ago";
+    } else {
+      return "Created " + interval + " days ago";
+    }
+  }
+  interval = Math.floor(seconds / 3600);
+  if (interval >= 1) {
+    if (interval === 1) {
+      return "Created " + interval + " hour ago";
+    } else {
+      return "Created " + interval + " hours ago";
+    }
+  }
+  interval = Math.floor(seconds / 60);
+  if (interval >= 1) {
+    if (interval === 1) {
+      return "Created " + interval + " minute ago";
+    } else {
+      return "Created " + interval + " minutes ago";
+    }
+  }
+  if (Math.floor(seconds) === 0) {
+    return "Created just now";
+  }
+  if (Math.floor(seconds) === 1) {
+    return "Created " + Math.floor(seconds) + " second ago";
+  }
+  return "Created " + Math.floor(seconds) + " seconds ago";
+}
+
 const createTweetElement = function(tweetData) {
   const $article = $("<article>");
   const $header = $("<header>");
@@ -17,10 +70,14 @@ const createTweetElement = function(tweetData) {
     .addClass("tweetText")
     .text(tweetData.content.text);
   const $footer = $("<footer>");
-  const $footerIcons = $("<div>").addClass("icons");
-  const $footerTime = $("<div>")
+  const $footerIcon1 = $("<i>").addClass("far fa-thumbs-up")
+  const $footerIcon2 = $("<i>").addClass("fas fa-flag-usa")
+  const $footerIcon3 = $("<i>").addClass("fas fa-retweet")
+  const $footerTime = $("<text>")
     .addClass("time")
-    .text(new Date(tweetData.created_at));
+    .text(timeSince(new Date(tweetData.created_at)));
+
+
 
   $article.append($header);
   $article.append($divTextBox);
@@ -30,7 +87,10 @@ const createTweetElement = function(tweetData) {
   $header.append($headerEmail);
   $divTextBox.append($divText);
   $footer.append($footerTime);
-  $footer.append($footerIcons);
+  $footer.append($footerIcon1);
+  $footer.append($footerIcon2);
+  $footer.append($footerIcon3);
+  
 
   return $article;
 };
@@ -75,6 +135,7 @@ const loadTweet = url => {
 
 $(function() {
   $(".error").hide();
+  $(".new-tweet").hide();
   $(".compose").click(function() {
     $(".new-tweet").slideToggle("fast");
     $(".text-area").focus();
@@ -96,7 +157,7 @@ $(function() {
         .slideDown("fast");
       return;
     } else {
-      console.log("Ajax works")
+      console.log("Ajax works");
       $(".error").slideUp("fast");
       $.ajax({
         data: $(this).serialize(),
