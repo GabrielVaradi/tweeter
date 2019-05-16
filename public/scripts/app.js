@@ -1,5 +1,6 @@
 const url = "/tweets";
 
+// Calculates the time between the date of creation of the tweet and the current time. It then displays the time elapsed in the appropriate mesure of time.
 function timeSince(date) {
   var seconds = Math.floor((new Date() - date) / 1000);
 
@@ -52,7 +53,7 @@ function timeSince(date) {
   }
   return "Created " + Math.floor(seconds) + " seconds ago";
 }
-
+// Creates the DOM tree dynamically as the tweets are posted.
 const createTweetElement = function(tweetData) {
   const $article = $("<article>");
   const $header = $("<header>");
@@ -70,14 +71,12 @@ const createTweetElement = function(tweetData) {
     .addClass("tweetText")
     .text(tweetData.content.text);
   const $footer = $("<footer>");
-  const $footerIcon1 = $("<i>").addClass("far fa-thumbs-up")
-  const $footerIcon2 = $("<i>").addClass("fas fa-flag-usa")
-  const $footerIcon3 = $("<i>").addClass("fas fa-retweet")
+  const $footerIcon1 = $("<i>").addClass("far fa-thumbs-up");
+  const $footerIcon2 = $("<i>").addClass("fas fa-flag-usa");
+  const $footerIcon3 = $("<i>").addClass("fas fa-retweet");
   const $footerTime = $("<text>")
     .addClass("time")
     .text(timeSince(new Date(tweetData.created_at)));
-
-
 
   $article.append($header);
   $article.append($divTextBox);
@@ -90,17 +89,18 @@ const createTweetElement = function(tweetData) {
   $footer.append($footerIcon1);
   $footer.append($footerIcon2);
   $footer.append($footerIcon3);
-  
 
   return $article;
 };
 
+//Loops through the database in order to render tweets
 function renderTweets(tweets) {
   for (const users of tweets) {
     $(".tweet-container").prepend(createTweetElement(users));
   }
 }
 
+//Loads the page with the initial tweets in the database
 const loadTweets = url => {
   $.ajax({
     method: "GET",
@@ -117,6 +117,7 @@ const loadTweets = url => {
     });
 };
 
+//"Refreshes" the page after adding a single tweet
 const loadTweet = url => {
   $.ajax({
     method: "GET",
@@ -134,15 +135,21 @@ const loadTweet = url => {
 };
 
 $(function() {
+  //Hide the error and the compose box then the page loads initially
   $(".error").hide();
   $(".new-tweet").hide();
+
+  //Toggles the compose button on click
   $(".compose").click(function() {
     $(".new-tweet").slideToggle("fast");
     $(".text-area").focus();
   });
+
+  //When the user clicks on submit, this function happens
   const $form = $("form");
   $form.on("submit", function(event) {
     event.preventDefault();
+    //Prevents the user to write a tweet longer than 140 characters and toggles an error message
     if ($(this).serialize().length > 145) {
       $(".error").slideUp("fast");
       $(".error")
@@ -150,23 +157,28 @@ $(function() {
         .slideDown("fast");
       return;
     }
-    if ($(this).serialize().length - 5 === 0) {
+    //Prevents the user to post an empty tweet and toggles an error message
+    if ($(this).serialize().length === 5) {
       $(".error").slideUp("fast");
       $(".error")
         .html("Please type in a tweet")
         .slideDown("fast");
       return;
     } else {
-      console.log("Ajax works");
       $(".error").slideUp("fast");
+      //If the conditions are met, make an AJAX post
       $.ajax({
         data: $(this).serialize(),
         method: "POST",
         url: "/tweets"
       })
         .done(function(reponse) {
-          console.log("Success: ", reponse); //response?
+          console.log("Success: ", reponse);
+          //Resets the counter to 140
+          $("#counter").html(140);
+          //Empties the text box
           $("form")[0].reset();
+          //Adds the tweet to the page
           loadTweet(url);
         })
         .fail(error => {
@@ -177,6 +189,6 @@ $(function() {
         });
     }
   });
-
+  //Adds the initial tweets to the page
   loadTweets(url);
 });

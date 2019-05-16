@@ -10,9 +10,7 @@
 }
 
  article:first-of-type{
-
-  margin-top: 120px;
-    
+  margin-top: 120px; 
 }
 
 .tweet-container article:hover {
@@ -107,7 +105,7 @@
   color: orange;
   vertical-align: -webkit-baseline-middle;
   padding-left: 5px;
-  width: 41%
+  width: 41%;
 }
 
 .tweet-container footer .fa-thumbs-up {
