@@ -41,13 +41,14 @@ function renderTweets(tweets) {
   }
 }
 
+//createtweet(url.pop())
+
 const loadTweets = url => {
   $.ajax({
     method: "GET",
     url: url
   })
     .done(function(response) {
-      //createtweet(url.pop())
       renderTweets(response);
     })
     .fail(error => {
@@ -56,12 +57,22 @@ const loadTweets = url => {
     .always(() => {
       console.log("Request completed");
     })
+};
+
+const loadTweet = url => {
+  $.ajax({
+    method: "GET",
+    url: url
+  })
+    .done(function(response) {
+      $(".tweet-container").prepend(createTweetElement(response.pop()));
+    })
     .fail(error => {
       console.log(`Error: ${error}`);
     })
     .always(() => {
       console.log("Request completed");
-    });
+    })
 };
 
 $(function() {
@@ -98,8 +109,8 @@ $(function() {
         .done(function(reponse) {
           console.log("Success: ", reponse);
           $("form")[0].reset();
-          loadTweets(url);
-          url.empty();
+          loadTweet(url);
+          // url.empty();
         })
         .fail(error => {
           console.log(`Error: ${error}`);
