@@ -4,3 +4,4 @@ node_modules/
 commit.md
 notes.js
 fakeTweets.js
+mongo-example.js

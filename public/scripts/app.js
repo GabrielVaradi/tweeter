@@ -41,8 +41,6 @@ function renderTweets(tweets) {
   }
 }
 
-//createtweet(url.pop())
-
 const loadTweets = url => {
   $.ajax({
     method: "GET",
@@ -56,7 +54,7 @@ const loadTweets = url => {
     })
     .always(() => {
       console.log("Request completed");
-    })
+    });
 };
 
 const loadTweet = url => {
@@ -72,7 +70,7 @@ const loadTweet = url => {
     })
     .always(() => {
       console.log("Request completed");
-    })
+    });
 };
 
 $(function() {
@@ -92,25 +90,23 @@ $(function() {
       return;
     }
     if ($(this).serialize().length - 5 === 0) {
-      //better way?
       $(".error").slideUp("fast");
       $(".error")
         .html("Please type in a tweet")
         .slideDown("fast");
       return;
     } else {
+      console.log("Ajax works")
       $(".error").slideUp("fast");
-      console.log("Button clicked, performing ajax call...");
       $.ajax({
         data: $(this).serialize(),
         method: "POST",
         url: "/tweets"
       })
         .done(function(reponse) {
-          console.log("Success: ", reponse);
+          console.log("Success: ", reponse); //response?
           $("form")[0].reset();
           loadTweet(url);
-          // url.empty();
         })
         .fail(error => {
           console.log(`Error: ${error}`);

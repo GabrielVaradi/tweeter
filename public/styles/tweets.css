@@ -1,6 +1,6 @@
 .tweet-container article {
   position: relative;
-  margin: 40px auto;
+  margin: auto;
   border-style: groove;
   border-radius: 6px;
   border-color: #eee;
@@ -80,7 +80,7 @@
 
 .tweet-container .tweetText {
   color: blue;
-  font-size: 20px;
+  font-size: 16px;
   padding-top: 30px;
   padding-left: 10px;
   word-break: break-word;
