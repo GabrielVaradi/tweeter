@@ -8,7 +8,7 @@ module.exports = function makeDataHelpers(db) {
       db.collection("tweets").insertOne(newTweet, callback);
     },
 
-    // Get all tweets in `db`, sorted by newest first
+    // Get all tweets in `db`
     getTweets: function(callback) {
       db.collection("tweets")
         .find()

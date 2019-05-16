@@ -1,58 +1,62 @@
 const url = "/tweets";
 
+// Get the info from json
+// Create an Ajax request to get the json of the quotes
+// Array of objects
+const request = (options, cb) => {
+  $.ajax(options)
+    .done(response => {
+      cb(response);
+    })
+    .fail(err => console.log("Error", err))
+    .always(() => console.log("Request completed."));
+};
+
 // Calculates the time between the date of creation of the tweet and the current time. It then displays the time elapsed in the appropriate mesure of time.
-function timeSince(date) {
+var timeSince = function(date) {
+  if (typeof date !== "object") {
+    date = new Date(date);
+  }
+
   var seconds = Math.floor((new Date() - date) / 1000);
-
+  var intervalType;
+  if (Math.floor(seconds) <= 0) {
+    return "Created just now!";
+  }
   var interval = Math.floor(seconds / 31536000);
+  if (interval >= 1) {
+    intervalType = "year";
+  } else {
+    interval = Math.floor(seconds / 2592000);
+    if (interval >= 1) {
+      intervalType = "month";
+    } else {
+      interval = Math.floor(seconds / 86400);
+      if (interval >= 1) {
+        intervalType = "day";
+      } else {
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) {
+          intervalType = "hour";
+        } else {
+          interval = Math.floor(seconds / 60);
+          if (interval >= 1) {
+            intervalType = "minute";
+          } else {
+            interval = seconds;
+            intervalType = "second";
+          }
+        }
+      }
+    }
+  }
 
-  if (interval >= 1) {
-    if (interval === 1) {
-      return "Created " + interval + " year ago";
-    } else {
-      return "Created " + interval + " years ago";
-    }
+  if (interval > 1 || interval === 0) {
+    intervalType += "s";
   }
-  interval = Math.floor(seconds / 2592000);
-  if (interval >= 1) {
-    if (interval === 1) {
-      return "Created " + interval + " months ago";
-    } else {
-      return "Created " + interval + " months ago";
-    }
-  }
-  interval = Math.floor(seconds / 86400);
-  if (interval >= 1) {
-    if (interval === 1) {
-      return "Created " + interval + " day ago";
-    } else {
-      return "Created " + interval + " days ago";
-    }
-  }
-  interval = Math.floor(seconds / 3600);
-  if (interval >= 1) {
-    if (interval === 1) {
-      return "Created " + interval + " hour ago";
-    } else {
-      return "Created " + interval + " hours ago";
-    }
-  }
-  interval = Math.floor(seconds / 60);
-  if (interval >= 1) {
-    if (interval === 1) {
-      return "Created " + interval + " minute ago";
-    } else {
-      return "Created " + interval + " minutes ago";
-    }
-  }
-  if (Math.floor(seconds) === 0) {
-    return "Created just now";
-  }
-  if (Math.floor(seconds) === 1) {
-    return "Created " + Math.floor(seconds) + " second ago";
-  }
-  return "Created " + Math.floor(seconds) + " seconds ago";
-}
+
+  return interval + " " + intervalType + " ago";
+};
 // Creates the DOM tree dynamically as the tweets are posted.
 const createTweetElement = function(tweetData) {
   const $article = $("<article>");
@@ -94,49 +98,43 @@ const createTweetElement = function(tweetData) {
 };
 
 //Loops through the database in order to render tweets
-function renderTweets(tweets) {
-  for (const users of tweets) {
-    $(".tweet-container").prepend(createTweetElement(users));
-  }
-}
+const renderTweets = tweets => {
+  $.each(tweets, (index, tweet) => {
+    //display the tweets in inverse chronological order
+    $(".tweet-container").prepend(createTweetElement(tweet));
+  });
+};
 
-//Loads the page with the initial tweets in the database
-const loadTweets = url => {
-  $.ajax({
+// Loads the page with the initial tweets in the database
+const loadTweets = () => {
+  const reqOptions = {
     method: "GET",
-    url: url
-  })
-    .done(function(response) {
-      renderTweets(response);
-    })
-    .fail(error => {
-      console.log(`Error: ${error}`);
-    })
-    .always(() => {
-      console.log("Request completed");
-    });
+    url: "/tweets",
+    dataType: "json"
+  };
+  // Trigger the Ajax request using reqOptions
+  request(reqOptions, tweet => {
+    renderTweets(tweet);
+  });
 };
 
 //"Refreshes" the page after adding a single tweet
-const loadTweet = url => {
-  $.ajax({
+const loadSingleTweet = () => {
+  const reqOptions = {
     method: "GET",
-    url: url
-  })
-    .done(function(response) {
-      $(".tweet-container").prepend(createTweetElement(response.pop()));
-    })
-    .fail(error => {
-      console.log(`Error: ${error}`);
-    })
-    .always(() => {
-      console.log("Request completed");
-    });
+    url: "/tweets",
+    dataType: "json"
+  };
+  // Trigger the Ajax request using reqOptions
+  request(reqOptions, tweet => {
+    $(".tweet-container").prepend(createTweetElement(tweet.pop()));
+  });
 };
 
 $(function() {
+  const $inputError = $(".error");
   //Hide the error and the compose box then the page loads initially
-  $(".error").hide();
+  $inputError.hide();
   $(".new-tweet").hide();
 
   //Toggles the compose button on click
@@ -149,26 +147,25 @@ $(function() {
   const $form = $("form");
   $form.on("submit", function(event) {
     event.preventDefault();
+    const userInput = $(this).serialize();
     //Prevents the user to write a tweet longer than 140 characters and toggles an error message
-    if ($(this).serialize().length > 145) {
-      $(".error").slideUp("fast");
-      $(".error")
+    if (userInput.length > 145) {
+      $inputError.slideUp("fast");
+      $inputError
         .html("Please type less than 140 characters")
         .slideDown("fast");
       return;
     }
     //Prevents the user to post an empty tweet and toggles an error message
-    if ($(this).serialize().length === 5) {
-      $(".error").slideUp("fast");
-      $(".error")
-        .html("Please type in a tweet")
-        .slideDown("fast");
+    if (userInput.length === 5) {
+      $inputError.slideUp("fast");
+      $inputError.html("Please type in a tweet").slideDown("fast");
       return;
     } else {
-      $(".error").slideUp("fast");
+      $inputError.slideUp("fast");
       //If the conditions are met, make an AJAX post
       $.ajax({
-        data: $(this).serialize(),
+        data: userInput,
         method: "POST",
         url: "/tweets"
       })
@@ -179,7 +176,7 @@ $(function() {
           //Empties the text box
           $("form")[0].reset();
           //Adds the tweet to the page
-          loadTweet(url);
+          loadSingleTweet(url);
         })
         .fail(error => {
           console.log(`Error: ${error}`);
