@@ -59,6 +59,7 @@ var timeSince = function(date) {
 };
 // Creates the DOM tree dynamically as the tweets are posted.
 const createTweetElement = function(tweetData) {
+  let like = 0
   const $article = $("<article>");
   const $header = $("<header>");
   const $avatar = $("<img>")
@@ -75,9 +76,10 @@ const createTweetElement = function(tweetData) {
     .addClass("tweetText")
     .text(tweetData.content.text);
   const $footer = $("<footer>");
-  const $footerIcon1 = $("<i>").addClass("far fa-thumbs-up");
+  const $footerIcon1 = $("<i>").addClass("far fa-thumbs-up").on("click")
   const $footerIcon2 = $("<i>").addClass("fas fa-flag-usa");
   const $footerIcon3 = $("<i>").addClass("fas fa-retweet");
+  const $footerLike = $('<div>').addClass('like').html("Likes <3 " + like)
   const $footerTime = $("<text>")
     .addClass("time")
     .text(timeSince(new Date(tweetData.created_at)));
@@ -93,6 +95,7 @@ const createTweetElement = function(tweetData) {
   $footer.append($footerIcon1);
   $footer.append($footerIcon2);
   $footer.append($footerIcon3);
+  $footer.append($footerLike)
 
   return $article;
 };
@@ -132,6 +135,8 @@ const loadSingleTweet = () => {
 };
 
 $(function() {
+
+
   const $inputError = $(".error");
   //Hide the error and the compose box then the page loads initially
   $inputError.hide();
@@ -148,8 +153,9 @@ $(function() {
   $form.on("submit", function(event) {
     event.preventDefault();
     const userInput = $(this).serialize();
+    const count = $(".text-area").val().length;
     //Prevents the user to write a tweet longer than 140 characters and toggles an error message
-    if (userInput.length > 145) {
+    if (count > 140) {
       $inputError.slideUp("fast");
       $inputError
         .html("Please type less than 140 characters")
@@ -157,7 +163,7 @@ $(function() {
       return;
     }
     //Prevents the user to post an empty tweet and toggles an error message
-    if (userInput.length === 5) {
+    if (count === 0) {
       $inputError.slideUp("fast");
       $inputError.html("Please type in a tweet").slideDown("fast");
       return;
@@ -176,7 +182,7 @@ $(function() {
           //Empties the text box
           $("form")[0].reset();
           //Adds the tweet to the page
-          loadSingleTweet(url);
+          loadSingleTweet();
         })
         .fail(error => {
           console.log(`Error: ${error}`);
@@ -187,5 +193,5 @@ $(function() {
     }
   });
   //Adds the initial tweets to the page
-  loadTweets(url);
+  loadTweets();
 });

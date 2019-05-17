@@ -136,8 +136,11 @@
   padding-right: 5px;
  }
 
-
-
+ .tweet-container footer .like {
+  color: black;
+  padding-left: 5px;
+  width: 41%;
+}
 
 
 
